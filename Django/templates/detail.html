@@ -1,0 +1,70 @@
+{% extends "layout.html" %}
+{% block body %}
+<div class="container mt-5">
+<div class="row">
+<div class="col-lg-8">
+<!-- Post content-->
+<article>
+    <!-- Post header-->
+    <header class="mb-4">
+        <!-- Post title-->
+        <h1 class="fw-bolder mb-1">{{article.title}}</h1>
+        <p class = "lead">by {{article.author.username}}</p>
+        <!-- Post meta content-->
+        <hr>
+        <div class="text-muted fst-italic mb-2">{{article.created_date}}</div>
+        <hr>
+    </header>
+    <!-- Preview image figure-->
+    {% if article.article_image %}
+    <figure class="mb-4"><img class="img-fluid rounded" src="{{article.article_image.url}}" alt="..."></figure>
+    {% endif %}
+    <!-- Post content-->
+    <section class="mb-5">
+        {{article.content|safe}}
+    </section>
+</article>
+<hr>
+{% if comments %}
+{% for comment in comments  %}
+<div class="d-flex">
+    {% if comment.profile_picture %}
+    <div class="flex-shrink-0"><img class="rounded-circle"  src="{{ comment.profile_picture.url }}" alt="..."></div>
+    {% else %}
+     <img class="rounded-circle" src="/path/to/default/profile_picture.jpg" alt="">
+    {% endif %}
+    <div class="ms-3">
+        <div class="fw-bold">{{comment.comment_author}}</div>
+        <b>{{comment.comment_date}}</b><br>
+        {{comment.comment_content}}
+    </div>
+</div><br>
+{% endfor %}
+{% else %}
+<div class="alert alert-danger">Bu makalede yorum bulunmamaktadır.</div>
+{% endif %}
+
+<section class="mb-5">
+        <div class="card bg-light">
+            <div class="card-body">
+                <!-- Comment form-->
+                <form class="mb-4" method = "post" action= "/article/article/{{article.id}}">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="">İsim</label>
+                    <input name = "comment_author" type="" class="form-control" id="" aria-describedby="" placeholder="İsminizi Girin">
+                </div>
+                <div class="form-group">
+                    <label for="">Yorum</label>
+                    <input name = "comment_content" type="" class="form-control" id="" aria-describedby="" placeholder="">
+                </div>
+                <button type="submit" class="btn btn-danger">Ekle</button>
+                </form>
+            </div>      
+        </div>
+</section>
+</div>
+</div>
+</div>
+</div>
+{% endblock body %}
